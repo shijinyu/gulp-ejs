@@ -22,7 +22,14 @@ module.exports = function (options, settings) {
             );
         }
 
+        var renderData = file.ejsrender || {};
+
         options.filename = file.path;
+        
+        for(k in renderData){
+            options[k] = renderData[k];
+        }
+        
         try {
             file.contents = new Buffer(ejs.render(file.contents.toString(), options));
             file.path = gutil.replaceExtension(file.path, settings.ext);
