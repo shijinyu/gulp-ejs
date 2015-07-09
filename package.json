@@ -1,5 +1,5 @@
 {
-  "name": "gulp-ejs",
+  "name": "gulp-ejs-pipe",
   "version": "1.1.0",
   "description": "A plugin for Gulp that parses ejs template files",
   "keywords": [
@@ -7,17 +7,18 @@
     "gulp",
     "ejs"
   ],
-  "homepage": "https://github.com/rogeriopvl/gulp-ejs",
-  "bugs": "https://github.com/rogeriopvl/gulp-ejs/issues",
+  "homepage": "https://github.com/shijinyu/gulp-ejs-pipe",
+  "bugs": {
+    "url": "https://github.com/shijinyu/gulp-ejs-pipe/issues"
+  },
   "author": {
     "name": "Rogério Vicente",
-    "email": "",
     "url": "https://github.com/rogeriopvl"
   },
   "main": "./index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/rogeriopvl/gulp-ejs.git"
+    "url": "git://github.com/shijinyu/gulp-ejs-pipe.git"
   },
   "scripts": {
     "test": "mocha"
@@ -38,7 +39,8 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/rogeriopvl/gulp-ejs/blob/master/LICENSE"
+      "url": "https://github.com/shijinyu/gulp-ejs-pipe/LICENSE"
     }
-  ]
+  ],
+  "readme": "ERROR: No README data found!"
 }
