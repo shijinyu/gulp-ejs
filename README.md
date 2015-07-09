@@ -1,26 +1,22 @@
-# gulp-ejs-pipe [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
+# gulp-ejs-pipe
 
 > ejs plugin for [gulp](https://github.com/wearefractal/gulp)
 
-## Forked from [gulp-ejs](https://github.com/rogeriopvl/gulp-ejs)
+与`gulp-ejs`有何不同？
 
-可通过管道为ejs模板引擎传入参数。
+`gulp-ejs-pipe` 从 `gulp-ejs` fork 出来，除了保留了后者的主要API，还增加了从 `file stream` 流对象读取参数的能力。这样做，是为了可能出现的这样一种需求：
 
-在上一个管道中配置：
-
-file.ejsrender 即可。
-
-以下readme部分来自gulp-ejs，尚未修改。
+参数需要动态地生成，或者需要之前的在管道(pipe)中被处理。
 
 ## Usage
 
-First, install `gulp-ejs` as a development dependency:
+安装 `gulp-ejs-pipe`:
 
 ```shell
-npm install --save-dev gulp-ejs
+npm install gulp-ejs-pipe
 ```
 
-Then, add it to your `gulpfile.js`:
+在 `gulpfile.js` 这样写，和 `gulp-ejs` 一样:
 
 ```javascript
 var ejs = require("gulp-ejs");
@@ -31,55 +27,62 @@ gulp.src("./templates/*.ejs")
 	}))
 	.pipe(gulp.dest("./dist"));
 ```
-If you want to use `gulp-ejs` in a watch/livereload task, you may want to avoid gulp exiting on error when, for instance, a partial file is `ENOENT`.
-Here's an example on how to make it work:
+
+或者这样（需要配合 gulp-gdo）：
+
+将需要传送给ejs的数据赋给file的ejsrender属性：
 
 ```javascript
-var ejs = require('gulp-ejs');
+var gulp = require('gulp');
 var gutil = require('gulp-util');
+var ejs = require('gulp-ejs');
+var gdo = require('gulp-gdo');
+var cfg = require('./config.json');
 
-gulp.src('./templates/*.ejs')
-	.pipe(ejs({
-		msg: 'Hello Gulp!'
-	}).on('error', gutil.log))
-	.pipe(gulp.dest('./dist'));
+gulp.task('compile',function() {
+
+    gulp.src("./html/**/[^_]*.ejs")
+        .pipe(gdo(function(file,path){
+            var name = path.dirname + "\\" +path.basename;
+
+            // 判断相应的key是否存在
+            if(cfg.hasOwnProperty(name)){
+				file.ejsrender = cfg[name];
+            }
+            
+            console.log(file.ejsrender);
+
+        }))
+        .pipe(ejs())
+        .on('error',gutil.log)
+        .pipe(gulp.dest('./dest'));
+});
 ```
-This will make gulp log the error and continue normal execution.
+其中```config.json```可能是这样的：
 
-## API
+```json
+{
+	"static/html/template_1" : {
+		"data_1":"Hello",
+		"data_2":"World"
+	},
+	"static/html/template_2" : {
+		"data_3":"Foo",
+		"data_4":"Bar"
+	}
+}
+```
 
-### ejs(options, settings)
+```html
+<!--static/html/template_1.ejs-->
+<div><%= data_1 %>,<%= data_2 %></div>
 
-#### options
-Type: `hash`
-Default: `{}`
 
-A hash object where each key corresponds to a variable in your template. Also you can set ejs options in this hash.
-
-For more info on `ejs` options, check the [project's documentation](https://github.com/visionmedia/ejs).
-
-#### settings
-Type: `hash`
-Default: `{ext: '.html'}`
-
-A hash object to configure the plugin.
-
-##### settings.ext
-Type: `String`
-Default: `.html`
-
-Defines the default file extension that will be appended to the filename.
-
+<!--static/html/template_2.ejs-->
+<div><%= data_3 %>,<%= data_4 %></div>
+	
+```
 
 ## License
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
-
-[npm-url]: https://npmjs.org/package/gulp-ejs
-[npm-image]: https://badge.fury.io/js/gulp-ejs.png
-
-[travis-url]: http://travis-ci.org/rogeriopvl/gulp-ejs
-[travis-image]: https://secure.travis-ci.org/rogeriopvl/gulp-ejs.png?branch=master
-
-[depstat-url]: https://david-dm.org/rogeriopvl/gulp-ejs
-[depstat-image]: https://david-dm.org/rogeriopvl/gulp-ejs.png
