@@ -1,6 +1,16 @@
-# gulp-ejs [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
+# gulp-ejs-pipe [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
 
 > ejs plugin for [gulp](https://github.com/wearefractal/gulp)
+
+## Forked from [gulp-ejs](https://github.com/rogeriopvl/gulp-ejs)
+
+可通过管道为ejs模板引擎传入参数。
+
+在上一个管道中配置：
+
+file.ejsrender 即可。
+
+以下readme部分来自gulp-ejs，尚未修改。
 
 ## Usage
 
